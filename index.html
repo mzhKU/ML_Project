@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Ml project : ">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Ml project</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/mzhKU/ML_Project">View on GitHub</a>
+
+          <h1 id="project_title">Ml project</h1>
+          <h2 id="project_tagline"></h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/mzhKU/ML_Project/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/mzhKU/ML_Project/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <p>&lt;!DOCTYPE html&gt;
+
+</p>
+
+
+<p></p>Introduction
+
+
+
+
+   pre .operator,
+   pre .paren {
+     color: rgb(104, 118, 135)
+   }
+
+   pre .literal {
+     color: #990073
+   }
+
+   pre .number {
+     color: #099;
+   }
+
+   pre .comment {
+     color: #998;
+     font-style: italic
+   }
+
+   pre .keyword {
+     color: #900;
+     font-weight: bold
+   }
+
+   pre .identifier {
+     color: rgb(0, 0, 0);
+   }
+
+   pre .string {
+     color: #d14;
+   }
+
+
+
+
+
+
+
+
+
+
+
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 13px;
+}
+
+body {
+  max-width: 800px;
+  margin: auto;
+  padding: 1em;
+  line-height: 20px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 {
+   font-size:2.2em;
+}
+
+h2 {
+   font-size:1.8em;
+}
+
+h3 {
+   font-size:1.4em;
+}
+
+h4 {
+   font-size:1.0em;
+}
+
+h5 {
+   font-size:0.9em;
+}
+
+h6 {
+   font-size:0.8em;
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre, img {
+  max-width: 100%;
+}
+
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code {
+  font-size: 92%;
+  border: 1px solid #ccc;
+}
+
+code[class] {
+  background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * {
+      background: transparent !important;
+      color: black !important;
+      filter:none !important;
+      -ms-filter: none !important;
+   }
+
+   body {
+      font-size:12pt;
+      max-width:100%;
+   }
+
+   a, a:visited {
+      text-decoration: underline;
+   }
+
+   hr {
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote {
+      padding-right: 1em;
+      page-break-inside: avoid;
+   }
+
+   tr, img {
+      page-break-inside: avoid;
+   }
+
+   img {
+      max-width: 100% !important;
+   }
+
+   @page :left {
+      margin: 15mm 20mm 15mm 10mm;
+   }
+
+   @page :right {
+      margin: 15mm 10mm 15mm 20mm;
+   }
+
+   p, h2, h3 {
+      orphans: 3; widows: 3;
+   }
+
+   h2, h3 {
+      page-break-after: avoid;
+   }
+}
+
+
+<p></p>
+
+<p></p>
+
+<h1>
+<a id="introduction" class="anchor" href="#introduction" aria-hidden="true"><span class="octicon octicon-link"></span></a>Introduction</h1>
+
+<p>Using a training data set obtained from Velloso <em>et al.</em>, a model was trained such that it could recognize the quality of physical training exercises.
+<em>I.e.</em> the model can recognize if an exercise is carried out according to instructions or not.</p>
+
+<h1>
+<a id="cleaning-data--preprocessing" class="anchor" href="#cleaning-data--preprocessing" aria-hidden="true"><span class="octicon octicon-link"></span></a>Cleaning Data / Preprocessing</h1>
+
+<p>Training and testing data was obtained from the course homepage in raw format.
+The data has 160 variables (including the one classification variable <code>classe</code> which should be predicted in using the testing data).<br>
+For cross-validated training, the training data was subdivided into a training and a testing set.</p>
+
+<pre><code>inTrain &lt;- createDataPartition(y=training_data$classe, p=0.7, list=FALSE)
+training &lt;- training_data[inTrain, ]
+testing &lt;- training_data[-inTrain, ]
+</code></pre>
+
+<p>Initial analysis revealed that a number of describing variables were present in the dataset.</p>
+
+<pre><code>training_numeric &lt;- training[sapply(training, is.numeric)]
+</code></pre>
+
+<p>Furthermore, variables specifying only one coordinate (<code>x</code>, <code>y</code> or <code>z</code>) of a feature were discarded.
+Finally, only features of <code>numeric</code> or <code>integer</code> class remained in the <code>red</code>uced data set.</p>
+
+<pre><code>red &lt;- training_numeric[ c("roll_belt", "pitch_belt", "yaw_belt", "total_accel_belt",
+                           "roll_arm", "pitch_arm", "yaw_arm", "total_accel_arm",
+                           "roll_dumbbell", "pitch_dumbbell", "yaw_dumbbell",
+                           "total_accel_dumbbell",
+                           "roll_forearm", "pitch_forearm", "yaw_forearm",
+                           "total_accel_forearm")]
+</code></pre>
+
+<p>The <code>classe</code> variable however had to be reattached to the data set.
+For an unkown reason, the rebinded <code>classe</code> variable had to be renamed.</p>
+
+<pre><code>red &lt;- cbind(red, training[inTrain, "classe"])
+colnames(red)[17] &lt;- "classe"
+names(red)
+</code></pre>
+
+<pre><code>##  [1] "roll_belt"            "pitch_belt"           "yaw_belt"            
+##  [4] "total_accel_belt"     "roll_arm"             "pitch_arm"           
+##  [7] "yaw_arm"              "total_accel_arm"      "roll_dumbbell"       
+## [10] "pitch_dumbbell"       "yaw_dumbbell"         "total_accel_dumbbell"
+## [13] "roll_forearm"         "pitch_forearm"        "yaw_forearm"         
+## [16] "total_accel_forearm"  "classe"
+</code></pre>
+
+<p>Also it was checked if any <code>NA</code> values remained in the data set which would require missing value imputation.</p>
+
+<pre><code>for(i in 1:length(names(red))-1){print(paste(names(red)[i], any(is.na(red[[1]]))))}
+</code></pre>
+
+<pre><code>## [1] " FALSE"
+## [1] "roll_belt FALSE"
+## [1] "pitch_belt FALSE"
+## [1] "yaw_belt FALSE"
+## [1] "total_accel_belt FALSE"
+## [1] "roll_arm FALSE"
+## [1] "pitch_arm FALSE"
+## [1] "yaw_arm FALSE"
+## [1] "total_accel_arm FALSE"
+## [1] "roll_dumbbell FALSE"
+## [1] "pitch_dumbbell FALSE"
+## [1] "yaw_dumbbell FALSE"
+## [1] "total_accel_dumbbell FALSE"
+## [1] "roll_forearm FALSE"
+## [1] "pitch_forearm FALSE"
+## [1] "yaw_forearm FALSE"
+## [1] "total_accel_forearm FALSE"
+</code></pre>
+
+<p>The working data set for training was now prepared.</p>
+
+<h1>
+<a id="exploratory-analysis" class="anchor" href="#exploratory-analysis" aria-hidden="true"><span class="octicon octicon-link"></span></a>Exploratory Analysis</h1>
+
+<p>Exploratory analysis was carried out but the findings are not conclusive.</p>
+
+<p><img alt="plot of chunk unnamed-chunk-7"> </p>
+
+<p>The fact that the <code>classe</code>s are separated by the sequence index might indicate that a time variable is present.
+This is indeed also stated in the data set description given by the study authors but is not further studied.</p>
+
+<h1>
+<a id="model-building-and-prediction" class="anchor" href="#model-building-and-prediction" aria-hidden="true"><span class="octicon octicon-link"></span></a>Model Building and Prediction</h1>
+
+<p>The model built for classification was based on training with random forest classification, cross-validation was done using the <code>trControl=trainControl(method="cv", number=25)</code> argument to the <code>train</code> function.</p>
+
+<pre><code># Preprocess and train.
+if(file.exists("./modelFitPrepCVRF.rda"))
+{ 
+    load("./modelFitPrepCVRF.rda")
+} else {
+    modelFitPrepCVRF &lt;- train(classe ~ .,
+                              data=red,
+                              preProcess=c("center", "scale"),
+                              trControl=trainControl(method="cv", number=25),
+                              method="rf")
+    save(modelFitPrepCVRF, file="./modelFitPrepCVRF.rda")
+}
+</code></pre>
+
+<p>It is important to note that preprocessing by <code>center</code> and <code>scale</code> is required, otherwise training does not converge.
+The accuracy of 25-fold cross-validating model using a random forest training and <code>mtry</code> of 9 was around 0.96.</p>
+
+<pre><code>modelFitPrepCVRF
+</code></pre>
+
+<pre><code>## Random Forest 
+## 
+## 13737 samples
+##    16 predictor
+##     5 classes: 'A', 'B', 'C', 'D', 'E' 
+## 
+## Pre-processing: centered, scaled 
+## Resampling: Cross-Validated (25 fold) 
+## 
+## Summary of sample sizes: 9215, 9213, 9214, 9214, 9214, 9215, ... 
+## 
+## Resampling results across tuning parameters:
+## 
+##   mtry  Accuracy  Kappa   Accuracy SD  Kappa SD
+##    2    0.9676    0.9590  0.008782     0.01114 
+##    9    0.9698    0.9618  0.008432     0.01067 
+##   16    0.9629    0.9531  0.010337     0.01307 
+## 
+## Accuracy was used to select the optimal model using  the largest value.
+## The final value used for the model was mtry = 9.
+</code></pre>
+
+<p>The error rate for new data (= out of sample error) is calculated as</p>
+
+<pre><code>modelFitPrepCVRF$finalModel
+</code></pre>
+
+<pre><code>## 
+## Call:
+##  randomForest(x = x, y = y, mtry = param$mtry) 
+##                Type of random forest: classification
+##                      Number of trees: 500
+## No. of variables tried at each split: 9
+## 
+##         OOB estimate of  error rate: 2.96%
+## Confusion matrix:
+##      A    B    C    D    E class.error
+## A 2700   35    1    0    1     0.01352
+## B   60 1749   11   18    0     0.04842
+## C    1   10 1633   34    5     0.02971
+## D    1   24   24 1554    9     0.03598
+## E    0    0    1   49 1679     0.02892
+</code></pre>
+
+<p>to be around 2.96 %.</p>
+
+<p></p>
+
+<p></p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Ml project maintained by <a href="https://github.com/mzhKU">mzhKU</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
